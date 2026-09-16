@@ -1,0 +1,8 @@
+{
+  "indexes": [
+    {"collectionGroup":"results","queryScope":"COLLECTION","fields":[{"fieldPath":"examId","order":"ASCENDING"},{"fieldPath":"score","order":"DESCENDING"}]},
+    {"collectionGroup":"participants","queryScope":"COLLECTION","fields":[{"fieldPath":"classId","order":"ASCENDING"},{"fieldPath":"name","order":"ASCENDING"}]},
+    {"collectionGroup":"exams","queryScope":"COLLECTION","fields":[{"fieldPath":"active","order":"DESCENDING"},{"fieldPath":"createdAt","order":"DESCENDING"}]}
+  ],
+  "fieldOverrides": []
+}

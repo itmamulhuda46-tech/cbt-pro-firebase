@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isAdmin() { return signedIn() && request.auth.token.admin == true; }
+    function isSelf(uid) { return signedIn() && request.auth.uid == uid; }
+
+    match /settings/{docId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /classes/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /participants/{uid} {
+      allow read: if isAdmin() || isSelf(uid);
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /exams/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.active == true);
+      allow write: if isAdmin();
+    }
+
+    // Public question content intentionally excludes the answer key.
+    match /question_public/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // Answer keys are never readable by ordinary students.
+    match /question_keys/{id} {
+      allow read, write: if isAdmin();
+    }
+
+    match /results/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow create, update, delete: if false; // only the secure Vercel API writes final scores
+    }
+
+    match /audit_logs/{id} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
