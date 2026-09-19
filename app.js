@@ -2,7 +2,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebas
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js';
 import { getFirestore, collection, doc, getDoc, getDocs, query, where, orderBy, limit, addDoc, setDoc, deleteDoc, writeBatch, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js';
 
-const cfg = await fetch('/api/config').then(r=>r.json());
+const cfg = window.CBT_FIREBASE_CONFIG;
 const app = initializeApp(cfg); const auth = getAuth(app); const db = getFirestore(app);
 const $ = s => document.querySelector(s);
 const appEl = $('#app'); let currentUser=null, profile=null, state={tab:'dashboard',timer:null,answers:{},qIndex:0,exam:null,questions:[]};
